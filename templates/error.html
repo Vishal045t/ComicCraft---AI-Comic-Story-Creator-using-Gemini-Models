@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Something went wrong – ComicCraft{% endblock %}
+{% block content %}
+<section class="center-card card">
+  <h1>{% if status == 404 %}Not found{% elif status == 422 %}Check your input{% else %}Something went wrong{% endif %}</h1>
+  <p>{{ message }}</p>
+  <div class="actions">
+    <a class="btn primary" href="/">Back to the form</a>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}ComicCraft – Create your comic{% endblock %}
+{% block content %}
+<section class="create">
+  <div class="intro">
+    <h1>Turn one idea into a five-panel comic</h1>
+    <p>Describe a story, pick the look, and download it as a PDF.</p>
+  </div>
+
+  <form id="comic-form" class="card" action="/generate" method="post" novalidate>
+    <label class="field-label" for="prompt">Your story idea</label>
+    <textarea id="prompt" name="prompt" rows="3" maxlength="600" required
+              placeholder="A brave fox exploring an enchanted forest"></textarea>
+    <div class="chips" aria-label="Story ideas">
+      {% for idea in samples %}<button type="button" class="chip" data-idea="{{ idea }}">{{ idea }}</button>{% endfor %}
+    </div>
+
+    <label class="field-label" for="character_name">Main character</label>
+    <input id="character_name" name="character_name" type="text" maxlength="40" required placeholder="Finn">
+
+    <fieldset class="pills">
+      <legend class="field-label">Setting</legend>
+      {% for key, icon, label in settings %}
+      <label class="pill"><input type="radio" name="setting" value="{{ key }}" {{ 'checked' if loop.first }}><span>{{ icon }} {{ label }}</span></label>
+      {% endfor %}
+    </fieldset>
+
+    <fieldset class="pills">
+      <legend class="field-label">Tone</legend>
+      {% for key, label in tones %}
+      <label class="pill"><input type="radio" name="tone" value="{{ key }}" {{ 'checked' if loop.first }}><span>{{ label }}</span></label>
+      {% endfor %}
+    </fieldset>
+
+    <fieldset class="pills">
+      <legend class="field-label">Art style</legend>
+      {% for key, label in styles %}
+      <label class="pill"><input type="radio" name="style" value="{{ key }}" {{ 'checked' if loop.first }}><span>{{ label }}</span></label>
+      {% endfor %}
+    </fieldset>
+
+    <p id="form-error" class="form-error" role="alert" hidden></p>
+    <button id="submit-btn" class="btn primary" type="submit">Create my comic</button>
+
+    {% if not gemini_ready or not hf_ready %}
+    <p class="hint">
+      {% if not gemini_ready %}No Gemini key found, so the story will use a simple built-in script. {% endif %}
+      {% if not hf_ready %}No Hugging Face key found, so images use a free fallback or placeholders. {% endif %}
+      Add your keys to <code>.env</code> and restart for the full experience.
+    </p>
+    {% endif %}
+  </form>
+</section>
+
+<div id="progress" class="overlay" hidden role="dialog" aria-modal="true" aria-labelledby="progress-title">
+  <div class="overlay-card">
+    <h2 id="progress-title">Making your comic</h2>
+    <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div id="bar-fill"></div></div>
+    <p id="progress-msg">Starting…</p>
+    <p class="hint">Drawing five panels usually takes 30–90 seconds.</p>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}<script src="/static/js/app.js"></script>{% endblock %}

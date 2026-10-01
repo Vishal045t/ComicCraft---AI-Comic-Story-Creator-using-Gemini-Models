@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}{{ meta.title }} – ComicCraft{% endblock %}
+{% block content %}
+<section class="preview">
+  <div class="preview-head">
+    <h1>{{ meta.title }}</h1>
+    <p class="meta">Starring {{ meta.character_name }} · {{ meta.setting|title }} · {{ meta.tone|title }} · {{ meta.style|title }}</p>
+    <div class="actions">
+      <a class="btn primary" href="/export-success/{{ comic.id }}">Download PDF</a>
+      <a class="btn ghost" href="/">Create another comic</a>
+    </div>
+  </div>
+
+  {% for w in comic.warnings %}<p class="notice">{{ w }}</p>{% endfor %}
+
+  <div class="panels">
+    {% for panel in layout %}
+    <article class="panel">
+      <div class="panel-art">
+        <img src="{{ panel.image_url }}" alt="{{ panel.scene_description }}" loading="lazy">
+        <span class="badge">{{ panel.panel }}</span>
+      </div>
+      <div class="panel-text">
+        <h2>{{ panel.title }}</h2>
+        {% if panel.caption %}<p class="caption">{{ panel.caption }}</p>{% endif %}
+        {% if panel.narration %}<p class="narration">{{ panel.narration }}</p>{% endif %}
+        {% for line in panel.dialogue %}
+        <p class="bubble">{% if line.speaker %}<strong>{{ line.speaker }}</strong>{% endif %}{{ line.text }}</p>
+        {% endfor %}
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+
+  <div class="actions bottom">
+    <a class="btn primary" href="/export-success/{{ comic.id }}">Download PDF</a>
+    <a class="btn ghost" href="/">Create another comic</a>
+  </div>
+</section>
+{% endblock %}

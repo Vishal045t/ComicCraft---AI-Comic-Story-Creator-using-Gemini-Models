@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}PDF ready – ComicCraft{% endblock %}
+{% block content %}
+<section class="center-card card">
+  <h1>Your comic PDF is ready</h1>
+  <p>“{{ meta.title }}” is downloading now. If nothing happens, use the button below.</p>
+  <div class="actions">
+    <a id="dl" class="btn primary" href="/download/{{ comic.id }}">Download PDF again</a>
+    <a class="btn ghost" href="/comic/{{ comic.id }}">Back to the comic</a>
+    <a class="btn ghost" href="/">Create another comic</a>
+  </div>
+</section>
+{% endblock %}
+{% block scripts %}<script>setTimeout(function () { window.location.href = document.getElementById("dl").href; }, 600);</script>{% endblock %}

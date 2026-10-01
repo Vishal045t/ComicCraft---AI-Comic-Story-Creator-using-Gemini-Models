@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+.env
+comiccraft-env/
+env/
+.pytest_cache/
+static/panels/*.png
+static/exports/*.pdf
+storage/comics/*.json
